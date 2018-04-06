@@ -1,0 +1,96 @@
+<h1 class="mb"><%= @bracket.name %></h1>
+
+<% if bracket_belongs_to_user? %>
+  <form action="/brackets/<%= user_bracket.id %>/delete" method="post">
+    <input type="hidden" name="_method" value="delete"/>
+    <input type="submit" value="Delete Bracket"/>
+  </form>
+<% end %>
+
+<br/><br/>
+
+<table class="widsm">
+  <th class="bb bt vmdpad">Final 4
+    <% if bracket_belongs_to_user? %>
+      <form class="di" action="/brackets/<%= user_bracket.id %>/edit" method="get">
+        <input type="hidden" name="edit" value="Final Four"/>
+        <input type="submit" value="Edit"/>
+      </form>
+    <% end %>
+  </th>
+  <th class="bb bt vmdpad">Championship
+    <% if bracket_belongs_to_user? %>
+      <form class="di" action="/brackets/<%= user_bracket.id %>/edit" method="get">
+        <input type="hidden" name="edit" value="Championship"/>
+        <input type="submit" value="Edit"/>
+      </form>
+    <% end %>
+  </th>
+  <th class="bb bt vmdpad">Champion</th>
+  <% @bracket_viewer[:final_rounds].each.with_index do |line_doublet, i| %>
+    <tr>
+      <% line_doublet[0].each do |team| %>
+        <td class="<%="pt" if i == 0%>"><%= team.strip.empty? ? "" : team %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <% line_doublet[1].each do |team| %>
+        <td class="pb"><%= team.strip.empty? ? "" : team %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<br/><br/>
+
+<% region_names = Team.region_names %>
+<table class="widlg">
+  <th class="bb bt vmdpad">1st Round
+    <% if bracket_belongs_to_user? %>
+      <form class="di" action="/brackets/<%= user_bracket.id %>/edit" method="get">
+        <input type="hidden" name="edit" value="1st Round"/>
+        <input type="submit" value="Edit"/>
+      </form>
+    <% end %>
+  </th>
+  <th class="bb bt vmdpad">2nd Round
+    <% if bracket_belongs_to_user? %>
+      <form class="di" action="/brackets/<%= user_bracket.id %>/edit" method="get">
+        <input type="hidden" name="edit" value="2nd Round"/>
+        <input type="submit" value="Edit"/>
+      </form>
+    <% end %>
+  </th>
+  <th class="bb bt vmdpad">Sweet 16
+    <% if bracket_belongs_to_user? %>
+      <form class="di" action="/brackets/<%= user_bracket.id %>/edit" method="get">
+        <input type="hidden" name="edit" value="Sweet Sixteen"/>
+        <input type="submit" value="Edit"/>
+      </form>
+    <% end %>
+  </th>
+  <th class="bb bt vmdpad">Elite 8
+    <% if bracket_belongs_to_user? %>
+      <form class="di" action="/brackets/<%= user_bracket.id %>/edit" method="get">
+        <input type="hidden" name="edit" value="Elite Eight"/>
+        <input type="submit" value="Edit"/>
+      </form>
+    <% end %>
+  </th>
+  <th class="bb bt vmdpad">Region Champion</th>
+  <% @bracket_viewer[:regional_rounds].each.with_index do |line_doublet, i| %>
+    <% if [0,8,16,24].include?(i) %>
+      <tr><td class="pt bld" colspan="5"><%= "#{region_names[(i/8).to_i]} Region".upcase %></td></tr>
+    <% end %>
+    <tr>
+      <% line_doublet[0].each do |team| %>
+        <td class="<%="pt" if [0,8,16,24].include?(i)%>"><%= team.strip.empty? ? "" : team %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <% line_doublet[1].each do |team| %>
+        <td class="pb <%="bb" if [7,15,23].include?(i)%>"><%= team.strip.empty? ? "" : team %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
