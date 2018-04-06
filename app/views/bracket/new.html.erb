@@ -1,0 +1,31 @@
+<h1><%= @viewer[:round] %></h1>
+
+<form action="/brackets" method="post">
+
+  <% @viewer[:logic].each do |header, games| %>
+
+    <h3><%= header %></h3>
+
+    <% games.each.with_index do |game_id, i| %>
+      <% game  = Game.find_by(:id => game_id) %>
+      <% team1 = game.teams[0] %>
+      <% team2 = game.teams[1] %>
+      <% nametag = "#{header}[#{(i/2).to_i}][#{game.id}]" %>
+
+      <div>
+        <p>
+          <input type="radio" id="<%=team1.id%>" name="<%=nametag%>" value="<%=team1.id%>" <%="checked" if team1.region_seed <= team2.region_seed%>/>
+          <label for="<%=team1.id%>">&nbsp;<%=team1.region_seed.to_s.rjust(2)%> <%=team1.name%></label>
+          <br/>
+          <input type="radio" id="<%=team2.id%>" name="<%=nametag%>" value="<%=team2.id%>" <%="checked" if team2.region_seed <  team1.region_seed%>/>
+          <label for="<%=team2.id%>">&nbsp;<%=team2.region_seed.to_s.rjust(2)%> <%=team2.name%></label>
+        </p>
+      </div>
+    <%end%>
+  <%end%>
+
+  <div>
+    <input type="submit" value="submit"/>
+  </div>
+
+</form>
