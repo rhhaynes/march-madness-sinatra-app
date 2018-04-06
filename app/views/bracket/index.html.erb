@@ -1,0 +1,28 @@
+<h1 class="mb">2018 NCAA Division 1 Men's Basketball Tournament</h1>
+<h2 class="maroff">Bracket List</h2>
+
+<% brackets  = Bracket.all.reject{|bracket| !bracket.complete?} %>
+<% n_samples = [10, brackets.size].min %>
+
+<% if n_samples < 1 %>
+
+  <h3 class="mb">Be the first to submit a bracket!</h3>
+
+<% else %>
+
+  <% if n_samples == 1 %>
+    <h3 class="mb">Check out this bracket!</h3>
+  <% else %>
+    <h3 class="mb"><%= "Check out these #{n_samples} brackets!" %></h3>
+  <% end %>
+
+  <table>
+    <% brackets.sample(n_samples).each.with_index(1) do |bracket, i| %>
+      <tr>
+        <td class="ptbr"><%= "(#{i}) #{bracket.user.name}:" %></td>
+        <td><a href="/brackets/<%= bracket.id %>"><%= "#{bracket.name}" %></a></td>
+      </tr>
+    <% end %>
+  </table>
+
+<% end %>
