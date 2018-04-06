@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>2018 March Madness</title>
+  <style type="text/css">
+    a:link, a:visited{color: black}
+    a:hover, a:active{color: red}
+    table{table-layout: fixed; border-collapse: collapse}
+    th{font-size: 18px; text-align: left}
+    .bld{font-weight: bold}
+    .bb{border-bottom: 1px solid black}
+    .bt{border-top: 1px solid black}
+    .di{display: inline}
+    .mb{margin-bottom: 5px}
+    .maroff{margin: 0px}
+    .pb{padding-bottom: 20px}
+    .pt{padding-top: 20px}
+    .plr{padding: 0px 10px 0px 25px}
+    .ptbr{padding: 2px 10px 2px 0px}
+    .vsmpad{padding: 2px 0px}
+    .vmdpad{padding: 5px 0px}
+    .widsm{width: 37.5%}
+    .widlg{width: 62.5%}
+  </style>
+</head>
+<body>
+  <% if logged_in? %>
+    <a href="/account">Account</a>&nbsp;
+    <%= "<a href='/brackets/#{user_bracket.id}'>MyBracket</a>&nbsp;" if user_bracket_exists? && user_bracket.complete? %>
+    <a href="/brackets">Brackets</a>&nbsp;
+    <a href="/teams">Teams</a>&nbsp;
+    <a href="/logout">Log Out</a><br/>
+  <% end %>
+  <%= yield %>
+</body>
+</html>
