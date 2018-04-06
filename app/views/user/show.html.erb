@@ -1,0 +1,35 @@
+<% if user_bracket_exists? %>
+
+  <% if user_bracket.complete? %>
+    <% champ = user_bracket.champion %>
+
+    <h1 class="mb">Welcome back, <%= current_user.name %>!</h1>
+    <h2 class="maroff">View your bracket now!</h2>
+
+    <h3 class="mb">Bracket</h3>
+    <div class="vsmpad"><a href="/brackets/<%= user_bracket.id %>"><%= user_bracket.name %></a></div>
+
+    <h3 class="mb">Bracket Champion</h3>
+    <div class="vsmpad"><a href="/teams/<%= champ.name_abbreviation.downcase %>"><%= "#{champ.name} #{champ.nickname}" %></a></div>
+
+  <% else %>
+
+    <h1 class="mb">Welcome back, <%= current_user.name %>!</h1>
+    <h2 class="maroff">Finish filling out your bracket now!</h2>
+
+    <h3 class="mb">Bracket</h3>
+    <div class="vsmpad"><a href="/brackets/new"><%= user_bracket.name %></a></div>
+
+  <% end %>
+
+<% else %>
+
+  <h1 class="mb">Hi, <%= current_user.name %>!</h1>
+  <h3 class="maroff">Complete your bracket now!</h3>
+  <br/>
+  <form action="/account" method="post">
+    <input type="text"   name="bracket_name" placeholder="Enter bracket name"/>&nbsp;
+    <input type="submit" value="Create Bracket"/>
+  </form>
+
+<% end %>
