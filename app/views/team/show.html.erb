@@ -1,0 +1,37 @@
+<h1 class="mb"><%= "#{@team.name} #{@team.nickname}" %></h1>
+<h2 class="maroff"><%= @team.season_record %></h2>
+
+<h3>#<%= @team.region_seed %> Seed in the <%= @team.region %> Region</h3>
+
+<% if user_bracket_exists? %>
+  <% games_won = @team.games_won.where(  :bracket_id => user_bracket.id) %>
+  <% game_lost = @team.game_lost.find_by(:bracket_id => user_bracket.id) %>
+
+  <% if !games_won.empty? %>
+    <div class="mb bld">Predicted tournament WINS</div>
+    <table>
+      <% games_won.each do |game| %>
+        <tr>
+          <td class="plr"><%= game.round %>:</td>
+          <td><a href="/teams/<%= game.loser.name_abbreviation.downcase %>"><%= "#{game.loser.region_seed} #{game.loser.name} #{game.loser.nickname}" %></a></td>
+        </tr>
+      <% end %>
+    </table>
+    <br/>
+  <% end %>
+
+  <% if !!game_lost %>
+    <div class="mb bld">Predicted tournament LOSS</div>
+    <table>
+      <tr>
+        <td class="plr"><%= game_lost.round %>:</td>
+        <td><a href="/teams/<%= game_lost.winner.name_abbreviation.downcase %>"><%= "#{game_lost.winner.region_seed} #{game_lost.winner.name} #{game_lost.winner.nickname}" %></a></td>
+      </tr>
+    </table>
+  <% else %>
+    <% if user_bracket.complete? %>
+      <div class="bld"><%= @team.name.upcase %> IS YOUR TOURNAMENT CHAMPION!</div>
+    <% end %>
+  <% end %>
+
+<% end %>

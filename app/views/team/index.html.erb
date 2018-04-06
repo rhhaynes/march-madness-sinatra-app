@@ -1,0 +1,15 @@
+<h1 class="mb">2018 NCAA Division 1 Men's Basketball Tournament</h1>
+<h2 class="maroff">Team List</h2>
+
+<% Team.regions.each do |region_name, teams| %>
+
+  <h3 class="mb"><%= region_name %></h3>
+
+  <% teams.each do |team| %>
+
+    <div class="vsmpad">
+      <a href="/teams/<%= team.name_abbreviation.downcase %>"><%= "(#{team.region_seed}) #{team.name} #{team.nickname}" %></a>
+    </div>
+
+  <% end %>
+<% end %>
