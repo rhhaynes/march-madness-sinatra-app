@@ -2,13 +2,31 @@
 <h2 class="maroff">Bracket List</h2>
 
 <% brackets  = Bracket.all.reject{|bracket| !bracket.complete?} %>
-<% n_samples = [10, brackets.size].min %>
+<% n_samples = [15, brackets.size].min %>
 
 <% if n_samples < 1 %>
 
   <h3 class="mb">Be the first to submit a bracket!</h3>
 
 <% else %>
+
+  <% champs_all = brackets.collect{|bracket| bracket.champion} %>
+  <% champs_cnt = champs_all.each_with_object(Hash.new(0)){|champ, hsh| hsh[champ.name] += 1}.sort{|a, b| b.last <=> a.last} %>
+  <% champs_fav = champs_cnt.select{ |name, cnt| cnt == champs_cnt.first.last}
+                            .collect{|name, cnt| [Team.find_by(:name => name), cnt]}
+                            .sort{|a, b| a.first.region_seed <=> b.first.region_seed}
+                            .to_h
+  %>
+
+  <h3 class="mb">Number of completed brackets</h3>
+  <div class="vsmpad"><%= champs_all.size %></div>
+
+  <h3 class="mb">Favorite pick(s) to win the tournament</h3>
+  <% champs_fav.each do |team, cnt| %>
+    <div class="vsmpad">
+      <a href="/teams/<%= team.name_abbreviation.downcase %>"><%= "#{team.region_seed} #{team.name} #{team.nickname}" %></a><%= " (#{cnt})" %>
+    </div>
+  <% end %>
 
   <% if n_samples == 1 %>
     <h3 class="mb">Check out this bracket!</h3>
