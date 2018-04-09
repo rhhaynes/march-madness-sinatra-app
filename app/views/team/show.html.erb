@@ -8,7 +8,7 @@
   <% game_lost = @team.game_lost.find_by(:bracket_id => user_bracket.id) %>
 
   <% if !games_won.empty? %>
-    <div class="mb bld">Predicted tournament WINS</div>
+    <div class="mb bld">Predicted tournament WINS in your bracket</div>
     <table>
       <% games_won.each do |game| %>
         <tr>
@@ -21,7 +21,7 @@
   <% end %>
 
   <% if !!game_lost %>
-    <div class="mb bld">Predicted tournament LOSS</div>
+    <div class="mb bld">Predicted tournament LOSS in your bracket</div>
     <table>
       <tr>
         <td class="plr"><%= game_lost.round %>:</td>
