@@ -31,4 +31,18 @@ module BracketGeneralHelpers
     @bracket.id == user_bracket.id if user_bracket_exists?
   end
 
+  # check regional status of specified bracket round
+  def regional_round?(round_name)
+    Bracket.rounds.index(round_name) < Bracket.rounds.index("Final Four")
+  end
+
+  # == Miscellaneous ========================================================= #
+
+  # return array of games sorted by region
+  def sort_games_by_region(games)
+    order = games.collect{|game| game.teams.first.region}.uniq
+    slice = (games.size/4).to_i
+    sort_by_region(games.each_slice(slice).to_a, order)
+  end
+
 end
