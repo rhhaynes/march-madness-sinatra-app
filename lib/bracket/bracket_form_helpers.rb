@@ -5,7 +5,10 @@ module BracketFormHelpers
   # define @viewer instance variable (hash) for passing to viewer
   def create_viewer_logic
     # determine number of games per header (gph) in current bracket round
-    games = user_bracket.games_in_round(@current_round)
+    if regional_round?(@current_round)
+         games = sort_games_by_region( user_bracket.games_in_round(@current_round) )
+    else games = user_bracket.games_in_round(@current_round)
+    end
     heads = Team.region_names_in_round( @current_round)
     gph   = games.size / heads.size
     # construct @viewer[:logic] such that header => [game.id, game.id, ...]
@@ -97,7 +100,7 @@ module BracketFormHelpers
   # destroy game(s) in specified and subsequent bracket rounds
   def destroy_games_to_edit
     user_bracket.games.select do |game|
-      Bracket.rounds.find_index(game.round) >= Bracket.rounds.find_index(@current_round)
+      Bracket.rounds.index(game.round) >= Bracket.rounds.index(@current_round)
     end.each{|game| game.destroy}
   end
 

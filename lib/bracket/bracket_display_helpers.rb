@@ -18,9 +18,12 @@ module BracketDisplayHelpers
 
   # == Miscellaneous ========================================================= #
 
-  # return array containing sub-arrays of games categorized by round
+  # return array containing sub-arrays of games categorized by round and sorted by region
   def collect_games_by_round(round_names)
-    round_names.collect{|round_name| @bracket.games_in_round(round_name)}
+    round_names.collect do |round_name|
+      games = @bracket.games_in_round(round_name)
+      regional_round?(round_name) ? sort_games_by_region(games) : games
+    end
   end
 
   # return jagged array containing padded sub-arrays of games spanning multiple rounds
@@ -51,10 +54,11 @@ module BracketDisplayHelpers
   # return jagged array containing padded sub-arrays of teams spanning multiple rounds
   # - includes 1st Round, 2nd Round, Sweet 16, Elite 8, and Region Champions
   def insert_region_champions(jagged_teams_arr)
+    region_champions = sort_by_region(@bracket.region_champions, @bracket.region_champions.collect{|team| team.region})
     jagged_teams_arr.collect.with_index do |row_doublet, i|
       row_doublet.collect.with_index do |row_of_teams, j|
         if [0,8,16,24].include?(i) && j == 0
-          champ = @bracket.region_champions[(i/8).to_i]
+          champ = region_champions[(i/8).to_i]
           row_of_teams.push("<a href='/teams/#{champ.name_abbreviation.downcase}'>#{champ.region_seed} #{champ.name}</a>")
         else
           row_of_teams.push("")
