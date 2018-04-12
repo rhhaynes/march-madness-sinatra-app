@@ -12,6 +12,7 @@
     .bb{border-bottom: 1px solid black}
     .bt{border-top: 1px solid black}
     .di{display: inline}
+    .err{color: red}
     .mb{margin-bottom: 5px}
     .maroff{margin: 0px}
     .pb{padding-bottom: 20px}
@@ -33,5 +34,6 @@
     <a href="/logout">Log Out</a><br/>
   <% end %>
   <%= yield %>
+  <%= "<h3 class='err'>#{flash[:notice]}</h3>" if !!flash[:notice] %>
 </body>
 </html>

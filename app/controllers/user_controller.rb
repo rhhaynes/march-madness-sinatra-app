@@ -16,7 +16,8 @@ class UserController < ApplicationController
       session[:user_id] = user.id
       redirect "/account"
     else
-      redirect "/"
+      flash[:notice] = "Invalid account submission.&nbsp; Please try again."
+      erb :"user/index.html"
     end
   end
 
@@ -27,7 +28,8 @@ class UserController < ApplicationController
       session[:user_id] = user.id
       redirect "/account"
     else
-      redirect "/"
+      flash[:notice] = "Invalid username or password.&nbsp; Please try again."
+      erb :"user/index.html"
     end
   end
 
